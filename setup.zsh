@@ -12,12 +12,12 @@ function stow() {
 		return 1
 	fi
 
-	if [[ ! -d "$target_path" ]]; then
+	if [[ ! -e "$target_path" ]]; then
 		ln -s "$source_path" "$target_path"
 		return 0
 	fi
 
-	for source_file in "$source_path"/**/*(N); do
+	for source_file in "$source_path"/**/*(DN); do
 		target_file="${source_file/#$source_path/$target_path}"
 		if [[ ! -e "$target_file" ]]; then
 			ln -fns "$source_file" "$target_file"
@@ -42,7 +42,7 @@ function unstow() {
 		return 0
 	fi
 
-	for source_file in "$source_path"/**/*(N); do
+	for source_file in "$source_path"/**/*(DN); do
 		target_file="${source_file/#$source_path/$target_path}"
 		if [[ -L "$target_file" ]]; then
 			rm "$target_file"
